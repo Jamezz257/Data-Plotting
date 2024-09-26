@@ -1,0 +1,53 @@
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+employee = pd.read_table("C:/Users/james/Python Code/CSV Files/remote_work_productivity.csv", sep=",")
+hours_worked = employee.Hours_Worked_Per_Week  # Hours worked
+wellbeing_score = employee.Well_Being_Score
+productivity_score = employee.Productivity_Score
+employment_type = employee.Employment_Type
+n = len(employee.Well_Being_Score)
+# Sample Data (Replace this with your actual data)
+#np.random.seed(42)
+#n = 50  # Number of data points
+#hours_worked = np.random.randint(20, 60, size=n)  # Hours worked
+#wellbeing_score = np.random.uniform(1, 10, size=n)  # Wellbeing score (1-10 scale)
+#productivity_score = np.random.uniform(1, 10, size=n)  # Productivity score (1-10 scale)
+#employment_type = np.random.choice(['Office', 'Remote'], size=n)  # Employment type
+
+# Create figure and axis
+fig, ax = plt.subplots(figsize=(10, 6))
+
+# Plot wellbeing scores
+for i in range(n):
+    if employment_type[i] == 'Office':
+        marker = 'o'  # Circle for Office
+    else:
+        marker = 's'  # Square for Remote
+    ax.scatter(hours_worked[i], wellbeing_score[i], color='blue', marker=marker, label='Wellbeing' if i == 0 else "", s=100)
+
+# Plot productivity scores
+for i in range(n):
+    if employment_type[i] == 'Office':
+        marker = 'o'  # Circle for Office
+    else:
+        marker = 's'  # Square for Remote
+    ax.scatter(hours_worked[i], productivity_score[i], color='green', marker=marker, label='Productivity' if i == 0 else "", s=100)
+
+# Add labels and title
+ax.set_xlabel('Hours Worked')
+ax.set_ylabel('Score (1-10)')
+ax.set_title('Wellbeing and Productivity Scores by Hours Worked')
+
+# Create a custom legend to show markers for employment types
+markers = [plt.Line2D([0], [0], marker='o', color='w', label='Office', markerfacecolor='black', markersize=10),
+           plt.Line2D([0], [0], marker='s', color='w', label='Remote', markerfacecolor='black', markersize=10)]
+
+ax.legend(handles=markers + [plt.Line2D([0], [0], marker='o', color='blue', label='Wellbeing', markersize=10),
+                             plt.Line2D([0], [0], marker='o', color='green', label='Productivity', markersize=10)],
+          loc='upper left')
+
+# Show the plot
+plt.tight_layout()
+plt.show()
