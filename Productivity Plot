@@ -1,0 +1,35 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+import numpy as np
+
+employee = pd.read_table("C:/Users/james/Python Code/CSV Files/remote_work_productivity.csv", sep=",")
+markerlist=[]
+
+for i in employee.Employment_Type:
+    if i == 'Remote':
+        markerlist.append('o')
+    else:
+        markerlist.append('^')
+
+fig, ax = plt.subplots()
+for x, y, m, in zip(employee.Hours_Worked_Per_Week, employee.Well_Being_Score, markerlist):
+    ax.plot(x,y,m,color='red', markersize=5)
+for x, y, m in zip(employee.Hours_Worked_Per_Week, employee.Productivity_Score, markerlist):
+    ax.plot(x,y,m,color='blue', markersize=5)
+    
+plt.xlabel("Hours Per Week")
+plt.ylabel("Score")
+
+label_column = ['Remote','Office']
+label_row = ['Wellbeing', 'Productivity']
+
+marker=['o','^']
+color = np.array(['r','b']).transpose()
+rows = [mpatches.Patch(color=color[i]) for i in range(2)]
+columns = [plt.plot([], [], marker[i], markerfacecolor='w',
+                    markeredgecolor='k')[0] for i in range(2)]
+plt.legend(rows + columns, label_row + label_column, loc=2,ncols = 2)
+
+plt.show()
+employee.head()
